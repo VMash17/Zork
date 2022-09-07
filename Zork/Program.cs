@@ -12,7 +12,7 @@ namespace Zork
             
             while (isRunning == true)
             {
-                Console.Write("> ");
+                Console.Write($"{rooms[currentRoom]}\n> ");
                 string inputString = Console.ReadLine().Trim();
 
                 Commands command = ToCommand(inputString);
@@ -31,10 +31,17 @@ namespace Zork
                     case Commands.SOUTH:
                     case Commands.WEST:
                     case Commands.EAST:
-                        outputString = $"You moved {command}.";
+                        if (Move(command))
+                        {
+                            outputString = $"You moved {command}.";
+                        }
+                        else
+                        {
+                            outputString = "The way is shut!";
+                        }
                         break;
                     default:
-                        outputString = "Unrecognized command.";
+                        outputString = "Unknown command.";
                         break;
                 }
                 Console.WriteLine(outputString);
@@ -52,6 +59,34 @@ namespace Zork
                 return Commands.UNKNOWN;
             }
 
+        }
+
+        private static string[] rooms = { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" };
+
+        private static int currentRoom = 1;
+
+        private static bool Move(Commands command)
+        {
+            bool canMove = false;
+
+            switch (command)
+            {
+                case Commands.NORTH:
+                case Commands.SOUTH:
+                    break;
+
+                case Commands.EAST when currentRoom < rooms.Length - 1:
+                    currentRoom++;
+                    canMove = true;
+                    break;
+
+                case Commands.WEST when currentRoom > 0:
+                    currentRoom--;
+                    canMove = true;
+                    break;
+            }
+
+            return canMove;
         }
     }
 }
