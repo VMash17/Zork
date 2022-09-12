@@ -12,7 +12,7 @@ namespace Zork
             
             while (isRunning == true)
             {
-                Console.Write($"{rooms[currentRoom]}\n> ");
+                Console.Write($"{rooms[Location.Row, Location.Column]}\n> ");
                 string inputString = Console.ReadLine().Trim();
 
                 Commands command = ToCommand(inputString);
@@ -61,9 +61,13 @@ namespace Zork
 
         }
 
-        private static string[] rooms = { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" };
+        private static readonly string[,] rooms = {
+            { "Rocky Trail", "South of House", "Canyon View" },
+            { "Forest", "West of House", "Behind House" },
+            { "Dense Woods", "North of House", "Clearing" }
+        };
 
-        private static int currentRoom = 1;
+        private static (int Row, int Column) Location = (1,1);
 
         private static bool Move(Commands command)
         {
@@ -71,17 +75,23 @@ namespace Zork
 
             switch (command)
             {
-                case Commands.NORTH:
-                case Commands.SOUTH:
-                    break;
-
-                case Commands.EAST when currentRoom < rooms.Length - 1:
-                    currentRoom++;
+                case Commands.NORTH when Location.Row < rooms.GetLength(0) - 1:
+                    Location.Row++;
                     canMove = true;
                     break;
 
-                case Commands.WEST when currentRoom > 0:
-                    currentRoom--;
+                case Commands.SOUTH when Location.Row > 0:
+                    Location.Row--;
+                    canMove = true;
+                    break;
+
+                case Commands.EAST when Location.Column < rooms.GetLength(1) - 1:
+                    Location.Column++;
+                    canMove = true;
+                    break;
+
+                case Commands.WEST when Location.Column > 0:
+                    Location.Column--;
                     canMove = true;
                     break;
             }
