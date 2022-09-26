@@ -7,7 +7,7 @@ namespace Zork
     class Program
     {
         private static Room CurrentRoom
-        {
+        { 
             get
             {
                 return rooms[Location.Row, Location.Column];
