@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Zork
 {
@@ -10,13 +11,13 @@ namespace Zork
         { 
             get
             {
-                return rooms[Location.Row, Location.Column];
+                return Rooms[Location.Row, Location.Column];
             }
         }
 
         static void Main(string[] args)
         {
-            InitializeRoomDescriptions(@"Content\Rooms.txt");
+            InitializeRooms(@"Content\Rooms.json");
 
             Console.WriteLine("Welcome to Zork!");
 
@@ -81,38 +82,11 @@ namespace Zork
             }
         }
 
-        private static void InitializeRoomDescriptions(string roomsFileName)
+        private static Room[,] Rooms;
+        private static void InitializeRooms(string roomsFileName)
         {
-            var roomMap = new Dictionary<string, Room>();
-
-            foreach (Room room in rooms)
-            {
-                roomMap[room.Name] = room;
-            }
-            
-            string[] lines = File.ReadAllLines(roomsFileName);
-            foreach (string line in lines)
-            {
-                const string fieldDelimiter = "##";
-                const int expectedFieldCount = 2;
-
-                string[] fields = line.Split(fieldDelimiter);
-                if (fields.Length != expectedFieldCount)
-                {
-                    throw new InvalidDataException("Invalid record.");
-                }
-                string name = fields[(int)Fields.Name];
-                string description = fields[(int)Fields.Description];
-
-                roomMap[name].Description = description;
-            }          
+            Rooms = JsonConvert.DeserializeObject<Room[,]>(File.ReadAllText(roomsFileName));
         }
-
-        private static readonly Room[,] rooms = {
-            { new Room("Rocky Trail"), new Room("South of House"), new Room("Canyon View") },
-            { new Room("Forest"), new Room("West of House"), new Room("Behind House") },
-            { new Room("Dense Woods"), new Room("North of House"), new Room("Clearing") }
-        };
 
         private static (int Row, int Column) Location = (1, 1);
 
@@ -121,7 +95,7 @@ namespace Zork
             bool canMove = true;
             switch (command)
             {
-                case Commands.NORTH when Location.Row < rooms.GetLength(0) - 1:
+                case Commands.NORTH when Location.Row < Rooms.GetLength(0) - 1:
                     Location.Row++;
                     break;
 
@@ -129,7 +103,7 @@ namespace Zork
                     Location.Row--;
                     break;
 
-                case Commands.EAST when Location.Column < rooms.GetLength(1) - 1:
+                case Commands.EAST when Location.Column < Rooms.GetLength(1) - 1:
                     Location.Column++;
                     break;
 
@@ -142,12 +116,6 @@ namespace Zork
                     break;
             }
             return canMove;
-        }
-
-        private enum Fields
-        {
-            Name = 0,
-            Description = 1
         }
     }
 }
