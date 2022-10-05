@@ -11,7 +11,6 @@ namespace Zork
             get
             {
                 return rooms[Location.Row, Location.Column];
-
             }
         }
 
