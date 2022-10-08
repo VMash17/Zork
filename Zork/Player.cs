@@ -12,6 +12,9 @@ namespace Zork
     }
     public class Player
     {
+        private int Score = 0;
+        private int Moves = 0;
+
         public World World { get; }
 
         [JsonIgnore]
@@ -42,9 +45,24 @@ namespace Zork
             if (isValidMove)
             {
                 Location = destination;
+                Moves++;
             }
-
             return isValidMove;
+        }
+
+        public void IncreaseScore()
+        {
+            Score++;
+        }
+
+        public int ReturnScore()
+        {
+            return Score;
+        }
+
+        public int ReturnMoves()
+        {
+            return Moves;
         }
     }
 }

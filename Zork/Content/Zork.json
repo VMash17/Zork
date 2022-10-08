@@ -1,6 +1,6 @@
 ﻿{
   "World": {
-    "Starting Location": "West of House",
+    "StartingLocation": "West of House",
     "Rooms": [
       {
         "Name": "West of House",
@@ -34,7 +34,7 @@
         "Neighbors": {
           "North": "North of House",
           "East": "Clearing",
-          "West": "South of House"
+          "South": "South of House"
         }
       },
       {

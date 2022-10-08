@@ -30,22 +30,23 @@ namespace Zork
             {
                 return false;
             }
-
             return lhs.Name == rhs.Name;
         }
 
         public static bool operator !=(Room lhs, Room rhs) => !(lhs == rhs);
 
         public override bool Equals(object obj) => obj is Room room ? this == room : false;
+        
         public bool Equals(Room other) => this == other;
+        
         public override string ToString() => Name;
-
+       
         public override int GetHashCode() => Name.GetHashCode();
+       
         public void UpdateNeighbors(World world) => Neighbors = (from entry in NeighborNames
                                                                  let room = world.RoomsByName.GetValueOrDefault(entry.Value)
                                                                  where room != null
                                                                  select (Direction: entry.Key, Room: room))
                                                                 .ToDictionary(pair => pair.Direction, pair => pair.Room);
     }
-
 }

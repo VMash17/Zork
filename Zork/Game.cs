@@ -57,6 +57,14 @@ namespace Zork
                         }
                         break;
 
+                    case Commands.REWARD:
+                        Player.IncreaseScore();
+                        break;
+
+                    case Commands.SCORE:
+                        Console.WriteLine("Your score would be " + Player.ReturnScore() + ", in " + Player.ReturnMoves() + " move(s).");
+                        break;
+
                     default:
                         Console.WriteLine("Unknown command.");
                         break;
@@ -74,5 +82,4 @@ namespace Zork
 
         private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
     }
-
 }
