@@ -33,10 +33,14 @@ namespace Zork
             }
         }
 
+        public List<Item> Inventory { get; }
+
         public Player(World world, string startingLocation)
         {
             World = world;
             LocationName = startingLocation;
+
+            Inventory = new List<Item>();
         }
 
         public bool Move(Directions direction)
@@ -63,6 +67,31 @@ namespace Zork
         public int ReturnMoves()
         {
             return Moves;
+        }
+
+        public void AddToInventory(Item item)
+        {
+            Inventory.Add(item);
+        }
+
+        public Item RemoveFromInventory(string itemName)
+        {
+            Item itemToDrop = null;
+
+            foreach (Item item in Inventory)
+            {
+                if(string.Compare(item.Name, itemName, ignoreCase: true) == 0)
+                {
+                    itemToDrop = item;
+                }
+            }
+
+            if (itemToDrop != null)
+            {
+                Inventory.Remove(itemToDrop);
+            }
+            
+            return itemToDrop;
         }
     }
 }

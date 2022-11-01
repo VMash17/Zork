@@ -17,7 +17,21 @@ namespace Zork
         private Dictionary<Directions, string> NeighborNames { get; set; }
 
         [JsonIgnore]
-        public IReadOnlyDictionary<Directions, Room> Neighbors { get; private set; }
+        public Dictionary<Directions, Room> Neighbors { get; private set; }
+
+        [JsonIgnore]
+        public List<Item> Inventory { get; private set; }
+
+        [JsonProperty(PropertyName = "Inventory")]
+        private string[] InventoryNames { get; set; }
+
+        public Room(string name, string description, Dictionary<Directions, string> neighborNames, string[] inventoryNames)
+        {
+            Name = name;
+            Description = description;
+            NeighborNames = neighborNames ?? new Dictionary<Directions, string>();
+            InventoryNames = inventoryNames ?? new string[0];
+        }
 
         public static bool operator ==(Room lhs, Room rhs)
         {
@@ -42,11 +56,50 @@ namespace Zork
         public override string ToString() => Name;
        
         public override int GetHashCode() => Name.GetHashCode();
-       
-        public void UpdateNeighbors(World world) => Neighbors = (from entry in NeighborNames
-                                                                 let room = world.RoomsByName.GetValueOrDefault(entry.Value)
-                                                                 where room != null
-                                                                 select (Direction: entry.Key, Room: room))
-                                                                .ToDictionary(pair => pair.Direction, pair => pair.Room);
+        
+        public void UpdateNeighbors(World world)
+        {
+            Neighbors = new Dictionary<Directions, Room>();
+            foreach (var neighborName in NeighborNames)
+            {
+                Neighbors.Add(neighborName.Key, world.RoomsByName[neighborName.Value]);
+            }
+            NeighborNames = null;
+        }
+
+        public void UpdateInventory(World world)
+        {
+            Inventory = new List<Item>();
+            foreach(var inventoryName in InventoryNames)
+            {
+                Inventory.Add(world.ItemsByName[inventoryName]);
+            }
+            InventoryNames = null;
+        }
+
+        public void AddToRoom(Item item)
+        {
+            Inventory.Add(item);
+        }
+
+        public Item Take(string itemName)
+        {
+            Item itemToTake = null;
+
+            foreach(Item item in Inventory)
+            {
+                if(string.Compare(item.Name, itemName, ignoreCase: true) == 0)
+                {
+                    itemToTake = item;
+                }
+            }
+
+            if (itemToTake != null)
+            {
+                Inventory.Remove(itemToTake);
+            }
+
+            return itemToTake;
+        }
     }
 }
