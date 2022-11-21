@@ -81,7 +81,7 @@ namespace Zork.Common
                     break;
 
                 case Commands.REWARD:
-                    Player.IncreaseScore();
+                    Player.Score++;
                     break;
 
                 case Commands.SCORE:

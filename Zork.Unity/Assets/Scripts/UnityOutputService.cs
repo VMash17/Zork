@@ -25,9 +25,17 @@ public class UnityOutputService : MonoBehaviour, IOutputService
 
     private void ParseAndWriteLine(string message)
     {
+        string newLine = "/n";
+        string[] lines = message.Split(newLine);
+
         var textLine = Instantiate(TextLinePrefab, ContentTransform);
-        textLine.text = message;
+        textLine.text = lines[0];
         entries.Add(textLine.gameObject);
+        if (lines.Length == 2)
+        {
+        textLine.text = lines[1];
+        entries.Add(textLine.gameObject);
+        }
     }
 
     private List<GameObject> entries = new List<GameObject>();

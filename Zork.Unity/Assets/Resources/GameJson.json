@@ -1,10 +1,10 @@
 ﻿{
+  "StartingLocation": "West of House",
   "World": {
-    "StartingLocation": "West of House",
     "Items": [
       {
         "Name": "Mat",
-        "Description": "A rubber mat with the words 'Welcome to Zork!' written on it lies here.",
+        "Description": "A rubber mat with the words 'Welcome to Zork!' written on it lies here."
       },
       {
         "Name": "Mailbox",

@@ -14,10 +14,12 @@ namespace Zork.Common
     public class Player
     {
         private int moves;
-        private int Score = 0;
+        private int score = 0;
 
         public event EventHandler<int> MovesChanged;
+        public event EventHandler<int> ScoreChanged;
         public event EventHandler<Room> LocationChanged;
+
         public Room CurrentRoom
         {
             get => _currentRoom;
@@ -47,11 +49,7 @@ namespace Zork.Common
 
         public int Moves
         {
-            get
-            {
-                return moves;
-            }
-
+            get => moves;
             set
             {
                 if (moves != value)
@@ -62,6 +60,18 @@ namespace Zork.Common
             }
         }
 
+        public int Score
+        {
+            get => score;
+            set
+            {
+                if (score != value)
+                {
+                    score = value;
+                    ScoreChanged?.Invoke(this, score);
+                }
+            }
+        }
 
         public bool Move(Directions direction)
         {
@@ -74,19 +84,14 @@ namespace Zork.Common
             return didMove;
         }
 
-        public void IncreaseScore()
-        {
-            Score++;
-        }
-
         public int ReturnScore()
         {
-            return Score;
+            return score;
         }
 
         public int ReturnMoves()
         {
-            return Moves;
+            return moves+1;
         }
 
         public void AddToInventory(Item item)
