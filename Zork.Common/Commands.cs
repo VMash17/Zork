@@ -27,6 +27,8 @@
         RESTORE,
         HELLO,
         HI = HELLO,
+        BAR,
+        ZORK,
         UNKNOWN
     }
 }

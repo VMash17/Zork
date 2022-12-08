@@ -186,6 +186,14 @@ namespace Zork.Common
                     Output.WriteLine("Good day.");
                     break;
 
+                case Commands.BAR:
+                    Output.WriteLine("Well, FOO, BAR, and BLETCH to you too!");
+                    break;
+
+                case Commands.ZORK:
+                    Output.WriteLine("At your service!");
+                    break;
+
                 default:
                     Output.WriteLine("Unknown command.");
                     break;
