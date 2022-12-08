@@ -14,12 +14,19 @@
         E = EAST,
         WEST,
         W = WEST,
+        UP,
+        CLIMB,
+        DOWN,
         SCORE,
         REWARD,
         TAKE,
         DROP,
         INVENTORY,
         I = INVENTORY,
+        SAVE,
+        RESTORE,
+        HELLO,
+        HI = HELLO,
         UNKNOWN
     }
 }

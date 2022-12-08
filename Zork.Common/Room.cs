@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 
 namespace Zork.Common
 {
+    [Serializable]
     public class Room
     {
         [JsonProperty(Order = 1)]
@@ -89,6 +90,7 @@ namespace Zork.Common
                 throw new Exception("Could not remove item from inventory.");
             }
         }
+
         public override string ToString() => Name;
 
         private readonly List<Item> _inventory;

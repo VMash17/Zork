@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using System;
 
 namespace Zork.Common
@@ -9,7 +8,10 @@ namespace Zork.Common
         North = Commands.NORTH,
         South = Commands.SOUTH,
         East = Commands.EAST,
-        West = Commands.WEST
+        West = Commands.WEST,
+        Up = Commands.UP,
+        Climb = Commands.CLIMB,
+        Down = Commands.DOWN
     }
     public class Player
     {
@@ -99,7 +101,6 @@ namespace Zork.Common
             if (_inventory.Contains(item))
             {
                 throw new Exception($"Item {item} already exists in inventory.");
-
             }
             _inventory.Add(item);
         }

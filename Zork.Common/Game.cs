@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace Zork.Common
 {
@@ -33,9 +34,31 @@ namespace Zork.Common
 
             isRunning = true;
             Input.InputReceived += OnInputRecieved;
+        }
+
+        public void New()
+        {
             Output.WriteLine("Welcome to Zork!");
             Output.WriteLine($"{Player.CurrentRoom}");
             Look();
+        }
+
+        public void Load()
+        {
+            string path = @"player";
+            if ((File.Exists(path)))
+            {
+                if (new FileInfo(path).Length > 0)
+                {
+                    Restore();
+                    Output.WriteLine($"{Player.CurrentRoom}"); 
+                    Look();
+                }
+            }
+            else
+            {
+                New();
+            }
         }
 
         public void OnInputRecieved(object sender, string inputString)
@@ -76,8 +99,32 @@ namespace Zork.Common
                 case Commands.SOUTH:
                 case Commands.WEST:
                 case Commands.EAST:
+                case Commands.UP:
+                case Commands.DOWN:
                     Directions direction = (Directions)command;
-                    Output.WriteLine(Player.Move(direction) ? $"You moved {direction}." : "The way is shut!");
+                    if (verb.Contains("UP"))
+                    {
+                        Output.WriteLine(Player.Move(direction) && previousRoom.Name == "Up a Tree" ? $"You moved {direction}." : "You cannot climb any higher.");
+                    }
+                    else
+                    {
+                        Output.WriteLine(Player.Move(direction) ? $"You moved {direction}." : "The way is shut!");
+                    }
+                    break;
+
+                case Commands.CLIMB:
+                    if (string.IsNullOrEmpty(subject))
+                    {
+                        Output.WriteLine("What do you want to climb up?");
+                    }
+                    else if (subject.Contains("tree"))
+                    {
+                        Output.WriteLine(Player.Move((Directions)command) ? $"You moved {(Directions)command}." : "You cannot see such thing.");
+                    }
+                    else if (previousRoom.Name == "Up a Tree")
+                    {
+                        Output.WriteLine(previousRoom.Name == "Up a Tree" ? $"You moved {(Directions)command}." : "You cannot climb any higher.");
+                    }
                     break;
 
                 case Commands.REWARD:
@@ -123,6 +170,20 @@ namespace Zork.Common
                             Output.WriteLine(playerItem.Description);
                         }
                     }
+                    break;
+
+                case Commands.SAVE:
+                    Save();
+                    Output.WriteLine("Ok.");
+                    break;
+
+                case Commands.RESTORE:
+                    Restore();
+                    Output.WriteLine("Ok.");
+                    break;
+
+                case Commands.HELLO:
+                    Output.WriteLine("Good day.");
                     break;
 
                 default:
@@ -179,7 +240,24 @@ namespace Zork.Common
                 Player.CurrentRoom.AddToRoom(itemDrop);
                 Player.RemoveFromInventory(itemDrop);
                 Output.WriteLine("Dropped.");
+            }
+        }
 
+        private void Save()
+        {
+            SaveSystem.SavePlayer(Player, World);
+        }
+
+        public void Restore()
+        {
+            PlayerData data = SaveSystem.LoadPlayer();
+
+            Player.CurrentRoom = data.startingLocation;
+            Player.Score = data.score;
+            Player.Moves = data.moves;
+            foreach (var item in data.inventory)
+            {
+                Player.AddToInventory(item);
             }
         }
 

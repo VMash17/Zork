@@ -9,6 +9,14 @@
       {
         "Name": "Mailbox",
         "Description": "There is a small mailbox here."
+      },
+      {
+        "Name": "Nest",
+        "Description": "There is a small birds nest here."
+      },
+      {
+        "Name": "Egg",
+        "Description": "There is a large egg encrusted with precious jewels, apparently scavenged somewhere by a childless songbird. The egg appears extremely fragile."
       }
     ],
     "Rooms": [
@@ -27,7 +35,7 @@
       },
       {
         "Name": "North of House",
-        "Description": "You are facing the north side of a white house. There is no door here, and all the windows are barred.",
+        "Description": "You are facing the north side of a white house. There is no door here, and all the windows are barred. To the north a narrow path winds through the trees.",
         "Neighbors": {
           "North": "Forest 2",
           "East": "Behind House",
@@ -65,8 +73,21 @@
         "Description": "This is a dimly lit forest, with large trees all around. One particularly large tree with some low branches stand here.",
         "Neighbors": {
           "South": "Clearing",
-          "East": "Clearing"
+          "East": "Clearing",
+          "Climb": "Up a Tree",
+          "Up": "Up a Tree"
         }
+      },
+      {
+        "Name": "Up a Tree",
+        "Description": "You are about 10 feet above the ground nestled among some large branches.  The nearest branch above you is above your reach.",
+        "Neighbors": {
+          "Down": "Forest 2"
+        },
+        "Inventory": [
+          "Nest",
+          "Egg"
+        ]
       },
       {
         "Name": "Forest 3",

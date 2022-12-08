@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zork.Common;
 using Newtonsoft.Json;
@@ -30,7 +28,6 @@ public class GameManager : MonoBehaviour
         game.Player.MovesChanged += Player_MoveChanged;
         game.Player.ScoreChanged += Player_ScoreChanged;
         game.Run(InputService, OutputService);
-        LocationText.text = game.Player.CurrentRoom.Name;
     }
 
     private void Player_LocationChanged(object sender, Room location)
@@ -70,5 +67,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private Game game;
+    public void NewGame()
+    {
+        game.New();
+
+        LocationText.text = game.Player.CurrentRoom.Name;
+    }
+
+    public void LoadGame()
+    {
+        game.Load();
+        
+        LocationText.text = game.Player.CurrentRoom.Name;
+    }
+
+    public Game game;
 }

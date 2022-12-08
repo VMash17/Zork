@@ -1,5 +1,8 @@
-﻿namespace Zork.Common
+﻿using System;
+
+namespace Zork.Common
 {
+    [Serializable]
     public class Item
     {
         public string Name { get; }
